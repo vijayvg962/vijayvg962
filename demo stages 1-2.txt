@@ -1,0 +1,15 @@
+pipeline{
+    agent any
+    stages{
+        stage("welcome"){
+            steps{
+                echo "demo jenkins pipeline"
+            }
+        }
+           stage("welcome1"){
+            steps{
+                echo "demo jenkins pipeline"
+            }
+        }
+}
+}

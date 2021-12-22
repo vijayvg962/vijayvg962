@@ -1,0 +1,16 @@
+pipeline{
+    agent{
+        label 'master'
+    }
+    stages{
+        stage("a"){
+            steps{
+                script{
+                    
+                    def name = "java"
+                    echo "this is one"
+                }
+            }
+        }
+    }
+}

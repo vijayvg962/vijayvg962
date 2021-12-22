@@ -1,0 +1,25 @@
+pipeline{
+    agent any
+    tools{
+        maven 'maven3'
+    }
+    stages{
+        stage("git checkout"){
+            steps{
+                git branch: 'master', credentialsId: 'git', url: 'https://github.com/dilliprakash/myweb'
+            }
+        }
+        stage("maven build"){
+            steps{
+                sh "mvn clean package"
+            }
+        }
+        stage("tomcat"){
+            steps{
+                sshagent(['pem']) {
+                    sh "scp -o StrictHostKeyChecking=no target/myweb-8.3.2.war ec2-user@172.31.88.59:/opt/tomcat8/webapps"
+}
+            }
+        }
+    }
+}

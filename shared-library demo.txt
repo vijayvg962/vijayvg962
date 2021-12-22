@@ -1,0 +1,35 @@
+@Library('lib-one') _
+
+pipeline{
+    agent any
+    stages{
+        stage("welcome"){
+            steps{
+                welcome ("dilliprakash")
+            }
+        }
+    }
+}
+
+
+
+demo shared libraries
+open git
+mkdir
+cd
+code .
+folder vars
+new file welcome.groovy
+def call(name){
+   echo "hi ${name},welcome to jenkins"
+   }
+   
+git add .
+git commit -a
+git push by adding repo
+create repo
+add remote
+push
+cretae new file and attach above pipeline syntax
+build
+success

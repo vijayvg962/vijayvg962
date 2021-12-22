@@ -1,0 +1,63 @@
+pipeline{
+    agent any
+    tools{
+        maven 'maven3'
+    }
+    environment {
+      DOCKER_TAG = dockerTag()
+    }
+    stages{
+        stage("git checkout"){
+            steps{
+                git branch: 'master', credentialsId: 'git', url: 'https://github.com/dilliprakash/my-app'
+            }
+        }
+        stage("maven build"){
+            steps{
+                sh 'mvn clean package'
+            }
+            
+        }
+        stage("docker build"){
+            steps{
+                script{
+                    tag = dockerTag()
+                    echo "Hello ${DOCKER_TAG}"
+                    sh "docker build . -t dilliprakash/devops:${DOCKER_TAG}"
+                }
+            }
+        }
+        stage("docker push"){
+            steps{
+                withCredentials([string(credentialsId: 'Dockerdeepu', variable: 'doc')]) {
+                    script{
+                        sshagent(['docker-dev']) {
+                            sh "docker login -u dilliprakash -p ${doc}"
+                            sh "docker push dilliprakash/devops:${DOCKER_TAG}"
+}
+                    }
+                }
+}
+            }
+        stage("remove old image"){
+            steps{
+                sshagent(['docker-dev']) {
+                    sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.38.47 docker rm -f dilluapp"
+                    sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.38.47 docker image prune -a -f"
+            }
+        }    
+        }
+        stage("deploy"){
+            steps{
+                sshagent(['docker-dev']) {
+                    sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.38.47 docker run -d -p 8080:8080 --name dilluapp  dilliprakash/devops:${DOCKER_TAG}"
+                }
+            }
+                
+            }
+        }
+}
+        
+def dockerTag(){
+    return sh(returnStdout: true, script: 'git rev-parse --short HEAD')
+}

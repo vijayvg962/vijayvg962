@@ -1,0 +1,50 @@
+@Library('lib-one') _
+
+pipeline{
+    agent any
+    stages{
+        stage("welcome"){
+            steps{
+                welcome ("dilliprakash")
+                git branch: 'master', credentialsId: 'git', url: 'https://github.com/dilliprakash/mystuff-libs'
+                echo "${dockerTag}"
+                script{
+                    calc.add(10,20)
+                    calc.sub(10,20)
+                }
+            }
+        }
+    }
+}
+
+git bash
+code .
+new file
+calc.groovy
+
+
+def add(x,y){
+    echo"sum of ${x} and ${y} is ${x+y}"
+}
+def sub(x,y){
+    echo "subraction of ${x} and ${y} is ${x-y}"
+}
+
+git add .
+git commit -m "add sub"
+git push
+ pipeline syntax attach
+build
+success
+
+10 and 20 is 30 for add
+10 and 20 is -10 for sub
+
+
+
+
+
+
+
+
+

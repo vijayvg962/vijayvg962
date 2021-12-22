@@ -1,0 +1,34 @@
+@Library('lib-one') _
+
+pipeline{
+    agent any
+    stages{
+        stage("welcome"){
+            steps{
+                welcome ("dilliprakash")
+                git branch: 'master', credentialsId: 'git', url: 'https://github.com/dilliprakash/mystuff-libs'
+                echo "${dockerTag}"
+            }
+        }
+    }
+}
+
+
+
+to add new tag back to back 
+git bash 
+new file
+dockerTag.groovy
+
+def call(){
+    return sh(returnStdout: true, script: 'git rev-parse --short HEAD')
+}
+
+git add .
+git commit -a 
+git push
+
+
+pineline syntax attach 
+build
+success

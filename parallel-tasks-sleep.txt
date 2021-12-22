@@ -1,0 +1,34 @@
+pipeline{
+    agent any
+    stages{
+        stage("run test case in parallel"){
+            parallel{
+                stage("run test case on windows"){
+                    steps{
+                        script{
+                           ("1....5").each {
+                               echo "task-1 ${it}"
+                        }
+                    }
+                }
+            }
+                stage("run test on linux"){
+                    steps{
+                        script{
+                          ("1....5").each{
+                              echo "task-2 ${it}"
+                }
+            }
+        }    
+        }
+                stage("sleep"){
+                    steps{
+                        sleep 2
+                    }
+                    
+                }
+                
+    }
+    } 
+    }
+}

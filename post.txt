@@ -1,0 +1,38 @@
+pipeline{
+    agent{
+        label 'master'
+    }
+    tools{
+        maven 'maven3'
+    }
+    parameters {
+        choice choices: ['master', 'dev', 'uat'], description: 'choose branch to build', name: 'branchName'
+}
+    stages{
+        stage("git checkout"){
+            steps{
+                git credentialsId: 'git', url: 'https://github.com/dilliprakash/my-app', branch:branchName
+        }
+    }
+        stage("maven build"){
+            steps{
+                sh 'mvn clean package'
+            }
+            
+        }
+    }
+        post {
+          always {
+            echo "a"
+          }
+        success {
+            echo "b"
+          }
+        failure {
+           echo "c"
+  
+}
+
+    }
+    }
+    
